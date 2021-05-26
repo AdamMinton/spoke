@@ -1,0 +1,29 @@
+name: Deploy
+
+on:
+  workflow_dispatch: 
+    inputs:
+      instance:
+        description: 'Test Prompt 1'
+        #required: true
+      commit:
+        description: 'Test Prompt 2'
+        #required: true
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      project: demo_github_actions_deployer
+    
+    steps:
+      - name: Checkout This Spoke
+        uses: actions/checkout@v2
+        with:
+          path: main
+
+      - name: Checkout hub repo
+        uses: actions/checkout@v2
+        with:
+          repository: AdamMinton/hub
+          path: hub
