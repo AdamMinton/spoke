@@ -4,26 +4,78 @@ on:
   workflow_dispatch: 
     inputs:
       instance:
-        description: 'Test Prompt 1'
-        #required: true
-      commit:
-        description: 'Test Prompt 2'
-        #required: true
-  
+        description: 'Select Instance to Deploy To: production'
+        required: true
+      spoke_commit:
+        description: 'Select Spoke Commit to Deploy'
+        required: true
+      hub_commit:
+        description: 'Specific Hub Commit SHA:'
+        default: 'Master'
+
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       project: demo_github_actions_deployer
+      python-version: 3.8        
     
-    steps:
-      - name: Checkout This Spoke
-        uses: actions/checkout@v2
-        with:
-          path: main
+    steps:  
+    - name: Set up Python ${{ env.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ env.python-version }}
 
-      - name: Checkout hub repo
-        uses: actions/checkout@v2
-        with:
-          repository: AdamMinton/hub
-          path: hub
+    - name: Install Looker Python SDK and Python GIT
+      run: |
+        python -m pip install --upgrade pip
+        pip install looker-sdk
+        pip install GitPython
+
+    - name: Create Looker ini File
+      run: |
+          cat << EOF > looker.ini
+          [production]
+          base_url=https://profservices.dev.looker.com:19999
+          client_id=${{ secrets.PROFSERVICES_CLIENT_ID }}
+          client_secret=${{ secrets.PROFSERVICES_SECRET }}
+          verify_ssl=True 
+          EOF
+
+    - name: Checkout Spoke Repo
+      uses: actions/checkout@v2
+      with:
+        path: spoke
+
+    - name: Checkout Hub Repo
+      uses: actions/checkout@v2
+      with:
+        repository: AdamMinton/hub
+        path: hub
+
+    - name: Get latest workflow files and merge latest changes from commit selected
+      #This step ensures the latest workflow files are available even if workflow files are updated after the code was previously deployed
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git branch -a
+        git switch ${{ github.event.inputs.instance }} 
+        git revert HEAD
+        git checkout main -- ./.github/workflows/
+        git cherry-pick ${{ github.event.inputs.spoke_commit }}
+    
+    - name: Update environment variables
+      #This will update lkml files for variables that are specific in each environment
+      run: |
+        python ./.github/workflows/find_and_replace.py ${{ github.event.inputs.instance }} ${{ github.event.inputs.hub_commit }}
+  
+    - name: Commit refreshed environment branch
+      run: |
+        git add -A
+        git commit -m "Updating ${{ github.event.inputs.instance }} with latest commits"
+        git push --set-upstream origin ${{ github.event.inputs.instance }}
+  
+    - name: Deploy looker code to instance
+      #This runs advanced deploy in the specified environment
+      run: |
+        python ./.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.instance }} ${{ env.project }}
