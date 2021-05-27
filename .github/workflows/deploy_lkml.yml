@@ -68,7 +68,7 @@ jobs:
         git config user.email github-actions@github.com
         git branch -a
         git switch ${{ github.event.inputs.instance }} 
-        git switch master
+        git switch main
         git branch -D ${{ github.event.inputs.instance }}
         git checkout -b ${{ github.event.inputs.instance }} ${{ github.event.inputs.spoke_commit }}
     
