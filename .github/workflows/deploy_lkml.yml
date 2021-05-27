@@ -68,7 +68,7 @@ jobs:
         git config user.email github-actions@github.com
         git fetch
         git branch -D ${{ github.event.inputs.instance }}
-        git checkout -b ${{ github.event.inputs.instance }} ${{ github.event.inputs.commit }}
+        git checkout -b ${{ github.event.inputs.instance }} ${{ github.event.inputs.spoke_commit }}
         git checkout master -- .github/workflows/
     
     - name: Update environment variables
