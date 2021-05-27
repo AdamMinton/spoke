@@ -91,9 +91,9 @@ jobs:
     - name: Deploy spoke looker code to instance
       #This runs advanced deploy in the specified environment
       run: |
-        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.instance }} ${{ env.spoke_project }}
+        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.instance }} ${{ env.spoke_project }} ${{ github.event.inputs.instance }}
     
     - name: Deploy hub looker code to instance
       #This runs advanced deploy in the specified environment
       run: |
-        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.hub_commit }} ${{ env.hub_project }}
+        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.instance }} ${{ env.hub_project }} main

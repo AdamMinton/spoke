@@ -22,6 +22,7 @@ def deploy_branch_to_production(branch, project):
 #Passed from github
 section = str(sys.argv[1]) #'profservices'
 project = str(sys.argv[2]) #demo_github_actions_deployer
+branch = str(sys.argv[3]) #main
 ini_file = 'looker.ini'
 
 #Read ini file 
