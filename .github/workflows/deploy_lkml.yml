@@ -55,6 +55,11 @@ jobs:
         path: hub
         ref: main
 
+    - name: Tree Files
+      run: |
+        sudo apt-get install tree
+        tree -a
+
     - name: Get latest workflow files and merge latest changes from commit selected
       #This step ensures the latest workflow files are available even if workflow files are updated after the code was previously deployed
       run: |
