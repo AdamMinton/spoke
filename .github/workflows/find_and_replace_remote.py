@@ -1,12 +1,14 @@
 import re,sys,git
 
 #Arguement passed in
-commit_arg = str(sys.argv[1]) #'Master'
-hub_repo =  str(sys.argv[2]) #'/Users/adamminton/Documents/GitHub/hub/'
-branch = str(sys.argv[3]) #'main'
+hub_repo =  str(sys.argv[1]) #'/Users/adamminton/Documents/GitHub/hub/'
+commit_arg = str(sys.argv[2]) #'Master'
+#branch = str(sys.argv[3]) #'main'
+branch = 'main'
 
 #Determine latest commit on hub branch
 repo = git.Repo(hub_repo)
+repo.git.checkout(branch)
 hub_sha = repo.head.object.hexsha
 
 #Determine which Commit SHA to use

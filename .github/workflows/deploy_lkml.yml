@@ -67,8 +67,13 @@ jobs:
     - name: Update environment variables
       #This will update lkml files for variables that are specific in each environment
       run: |
-        python ./.github/workflows/find_and_replace.py ${{ github.event.inputs.instance }} ${{ github.event.inputs.hub_commit }}
+        python ./.github/workflows/find_and_replace.py ${{ github.event.inputs.instance }}
   
+    - name: Update manifest repo hub reference
+      #This will update manifest file for the specific version of manifest
+      run: |
+        python ./.github/workflows/find_and_replace_remote.py ${{ env.GITHUB_WORKSPACE }}/hub ${{ github.event.inputs.hub_commit }}
+    
     - name: Commit refreshed environment branch
       run: |
         git add -A
