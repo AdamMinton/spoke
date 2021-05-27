@@ -11,7 +11,7 @@ on:
         required: true
       hub_commit:
         description: 'Specific Hub Commit SHA:'
-        default: 'Master'
+        default: 'Main'
 
 jobs:
   build:
@@ -77,7 +77,7 @@ jobs:
     - name: Update manifest repo hub reference
       #This will update manifest file for the specific version of manifest
       run: |
-        python ./spoke/.github/workflows/find_and_replace_remote.py ${{ env.GITHUB_WORKSPACE }}/hub ${{ github.event.inputs.hub_commit }}
+        python ./spoke/.github/workflows/find_and_replace_remote.py ${{ github.event.inputs.hub_commit }}
     
     - name: Commit refreshed environment branch
       run: |
