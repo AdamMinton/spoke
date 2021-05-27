@@ -17,7 +17,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      project: demo_github_actions_deployer
+      project: demo_hub_and_spoke_deployer
       python-version: 3.8        
     
     steps:  
@@ -66,23 +66,10 @@ jobs:
         cd spoke
         git config user.name github-actions
         git config user.email github-actions@github.com
-        git status
-        git --version
-        git rev-parse --short HEAD
-        git fetch
-        git switch ${{ github.event.inputs.instance }} 
-        git rev-parse --short HEAD
-        git fetch
-        git status
-        git revert --no-edit HEAD
-        git rev-parse --short HEAD
-        git status
-        git push
-        git merge --no-edit ${{ github.event.inputs.spoke_commit }} --allow-unrelated-histories
-
-      #git add -A
-      #git commit -m "Reverting ${{ github.event.inputs.instance }} only changes"
-
+        git branch -D ${{ github.event.inputs.instance }}
+        git checkout -b ${{ github.event.inputs.instance }} ${{ github.event.inputs.commit }}
+        git checkout master -- .github/workflows/
+    
     - name: Update environment variables
       #This will update lkml files for variables that are specific in each environment
       run: |
