@@ -61,7 +61,7 @@ jobs:
         git config user.email github-actions@github.com
         git fetch 
         git switch ${{ github.event.inputs.instance }} 
-        git revert HEAD
+        git revert --no-edit HEAD
         git cherry-pick ${{ github.event.inputs.spoke_commit }}
         git checkout main -- ./.github/workflows/ --force 
     
