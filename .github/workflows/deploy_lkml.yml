@@ -64,7 +64,7 @@ jobs:
         git pull 
         git switch ${{ github.event.inputs.instance }} 
         git revert --no-edit HEAD
-        git merge --no-edit ${{ github.event.inputs.spoke_commit }}
+        git merge --no-edit ${{ github.event.inputs.spoke_commit }} --allow-unrelated-histories
 
       #git add -A
       #git commit -m "Reverting ${{ github.event.inputs.instance }} only changes"
