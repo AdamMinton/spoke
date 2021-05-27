@@ -61,7 +61,7 @@ jobs:
         cd spoke
         git config user.name github-actions
         git config user.email github-actions@github.com
-        git fetch 
+        git pull 
         git switch ${{ github.event.inputs.instance }} 
         git revert --no-edit HEAD
         git merge --no-edit ${{ github.event.inputs.spoke_commit }}
