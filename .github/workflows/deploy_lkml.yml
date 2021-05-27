@@ -66,6 +66,7 @@ jobs:
         cd spoke
         git config user.name github-actions
         git config user.email github-actions@github.com
+        git fetch
         git branch -D ${{ github.event.inputs.instance }}
         git checkout -b ${{ github.event.inputs.instance }} ${{ github.event.inputs.commit }}
         git checkout master -- .github/workflows/
