@@ -11,13 +11,14 @@ on:
         required: true
       hub_commit:
         description: 'Specific Hub Commit SHA:'
-        default: 'Main'
+        default: 'main'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      project: demo_hub_and_spoke_deployer
+      spoke_project: demo_hub_and_spoke_deployer
+      hub_project: demo_hub_and_spoke_deployer_2
       python-version: 3.8        
     
     steps:  
@@ -87,7 +88,12 @@ jobs:
         git commit -m "Updating ${{ github.event.inputs.instance }} with latest commits"
         git push --set-upstream origin ${{ github.event.inputs.instance }} --force
   
-    - name: Deploy looker code to instance
+    - name: Deploy spoke looker code to instance
       #This runs advanced deploy in the specified environment
       run: |
-        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.instance }} ${{ env.project }}
+        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.instance }} ${{ env.spoke_project }}
+    
+    - name: Deploy hub looker code to instance
+      #This runs advanced deploy in the specified environment
+      run: |
+        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.hub_commit }} ${{ env.hub }}

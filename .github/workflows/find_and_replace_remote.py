@@ -3,7 +3,7 @@ import re,sys,git
 #Arguement passed in
 hub_repo_path = './hub'
 spoke_repo_path = './spoke' 
-commit_arg = str(sys.argv[1]) #'Main'
+commit_arg = str(sys.argv[1]) #'main'
 branch = 'main'
 
 #Determine latest commit on hub branch
@@ -12,7 +12,7 @@ repo.git.checkout(branch)
 hub_sha = repo.head.object.hexsha
 
 #Determine which Commit SHA to use
-if commit_arg == 'Main':
+if commit_arg == 'main':
     commit = hub_sha
 else:
     commit = commit_arg
