@@ -59,7 +59,6 @@ jobs:
         cd spoke
         git config user.name github-actions
         git config user.email github-actions@github.com
-        git branch -a
         git switch ${{ github.event.inputs.instance }} 
         git revert HEAD
         git checkout main -- ./.github/workflows/
