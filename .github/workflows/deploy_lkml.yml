@@ -47,6 +47,7 @@ jobs:
       with:
         path: spoke
         ref: main
+        fetch-depth: 0
 
     - name: Checkout Hub Repo
       uses: actions/checkout@v2
@@ -54,6 +55,7 @@ jobs:
         repository: AdamMinton/hub
         path: hub
         ref: main
+        fetch-depth: 0
 
     - name: Tree Files
       run: |
