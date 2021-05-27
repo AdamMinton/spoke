@@ -62,6 +62,8 @@ jobs:
         git fetch 
         git switch ${{ github.event.inputs.instance }} 
         git revert HEAD
+        git add -A
+        git commit -m "Reverting ${{ github.event.inputs.instance }} only changes"
         git cherry-pick ${{ github.event.inputs.spoke_commit }}
         git checkout main -- ./.github/workflows/
     
