@@ -63,6 +63,7 @@ jobs:
         git config user.email github-actions@github.com
         git pull 
         git switch ${{ github.event.inputs.instance }} 
+        git pull
         git revert --no-edit HEAD
         git merge --no-edit ${{ github.event.inputs.spoke_commit }} --allow-unrelated-histories
 
