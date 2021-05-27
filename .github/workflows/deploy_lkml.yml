@@ -73,6 +73,7 @@ jobs:
         git status
         git revert --no-edit HEAD
         git status
+        git push
         git merge --no-edit ${{ github.event.inputs.spoke_commit }} --allow-unrelated-histories
 
       #git add -A
