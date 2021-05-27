@@ -34,13 +34,13 @@ jobs:
 
     - name: Create Looker ini File
       run: |
-          cat << EOF > looker.ini
-          [production]
-          base_url=https://profservices.dev.looker.com:19999
-          client_id=${{ secrets.PROFSERVICES_CLIENT_ID }}
-          client_secret=${{ secrets.PROFSERVICES_SECRET }}
-          verify_ssl=True 
-          EOF
+        cat << EOF > looker.ini
+        [production]
+        base_url=https://profservices.dev.looker.com:19999
+        client_id=${{ secrets.PROFSERVICES_CLIENT_ID }}
+        client_secret=${{ secrets.PROFSERVICES_SECRET }}
+        verify_ssl=True 
+        EOF
 
     - name: Checkout Spoke Repo
       uses: actions/checkout@v2
@@ -57,11 +57,6 @@ jobs:
         ref: main
         fetch-depth: 0
 
-    - name: Tree Files
-      run: |
-        sudo apt-get install tree
-        tree -a
-
     - name: Get latest workflow files and merge latest changes from commit selected
       #This step ensures the latest workflow files are available even if workflow files are updated after the code was previously deployed
       run: |
@@ -77,12 +72,12 @@ jobs:
     - name: Update environment variables
       #This will update lkml files for variables that are specific in each environment
       run: |
-        python ./.github/workflows/find_and_replace.py ${{ github.event.inputs.instance }}
+        python ./spoke/.github/workflows/find_and_replace.py ${{ github.event.inputs.instance }}
   
     - name: Update manifest repo hub reference
       #This will update manifest file for the specific version of manifest
       run: |
-        python ./.github/workflows/find_and_replace_remote.py ${{ env.GITHUB_WORKSPACE }}/hub ${{ github.event.inputs.hub_commit }}
+        python ./spoke/.github/workflows/find_and_replace_remote.py ${{ env.GITHUB_WORKSPACE }}/hub ${{ github.event.inputs.hub_commit }}
     
     - name: Commit refreshed environment branch
       run: |
@@ -93,4 +88,4 @@ jobs:
     - name: Deploy looker code to instance
       #This runs advanced deploy in the specified environment
       run: |
-        python ./.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.instance }} ${{ env.project }}
+        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.instance }} ${{ env.project }}
