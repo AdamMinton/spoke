@@ -10,7 +10,7 @@ def findReplace(directory, find, replace, filePattern):
             with open(filepath, "w") as f:
                 f.write(s)
 
-json_file_path = "./.github/workflows/environment_variables.json"
+json_file_path = "./spoke/.github/workflows/environment_variables.json"
 environment = str(sys.argv[1])
 directory = "./"
 
