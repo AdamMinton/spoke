@@ -46,12 +46,14 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: spoke
+        ref: main
 
     - name: Checkout Hub Repo
       uses: actions/checkout@v2
       with:
         repository: AdamMinton/hub
         path: hub
+        ref: main
 
     - name: Get latest workflow files and merge latest changes from commit selected
       #This step ensures the latest workflow files are available even if workflow files are updated after the code was previously deployed
