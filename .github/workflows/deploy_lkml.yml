@@ -70,7 +70,7 @@ jobs:
         git switch ${{ github.event.inputs.instance }} 
         git pull
         git revert --no-edit HEAD
-        git merge --no-edit ${{ github.event.inputs.spoke_commit }} --allow-unrelated-histories
+        git merge --no-edit ${{ github.event.inputs.spoke_commit }} --allow-unrelated-histories --force
 
       #git add -A
       #git commit -m "Reverting ${{ github.event.inputs.instance }} only changes"
