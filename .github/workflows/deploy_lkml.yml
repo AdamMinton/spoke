@@ -69,7 +69,6 @@ jobs:
         git fetch
         git branch -D ${{ github.event.inputs.instance }}
         git checkout -b ${{ github.event.inputs.instance }} ${{ github.event.inputs.spoke_commit }}
-        git checkout master -- .github/workflows/
     
     - name: Update environment variables
       #This will update lkml files for variables that are specific in each environment
