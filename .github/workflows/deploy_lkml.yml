@@ -68,11 +68,14 @@ jobs:
         git config user.email github-actions@github.com
         git status
         git --version
+        git rev-parse --short HEAD
         git fetch
         git switch ${{ github.event.inputs.instance }} 
+        git rev-parse --short HEAD
         git fetch
         git status
         git revert --no-edit HEAD
+        git rev-parse --short HEAD
         git status
         git push
         git merge --no-edit ${{ github.event.inputs.spoke_commit }} --allow-unrelated-histories
