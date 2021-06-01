@@ -3,9 +3,6 @@ name: Deploy
 on:
   workflow_dispatch: 
     inputs:
-      instance:
-        description: 'Select Instance to Deploy To: production'
-        required: true
       spoke_commit:
         description: 'Select Spoke Commit to Deploy'
         required: true
@@ -19,7 +16,8 @@ jobs:
     env:
       spoke_project: demo_hub_and_spoke_deployer
       hub_project: demo_hub_and_spoke_deployer_2
-      python-version: 3.8        
+      python-version: 3.8
+      instance: production
     
     steps:  
     - name: Set up Python ${{ env.python-version }}
@@ -65,16 +63,16 @@ jobs:
         git config user.name github-actions
         git config user.email github-actions@github.com
         git branch -a
-        git switch ${{ github.event.inputs.instance }} 
+        git switch ${{ env.instance }} 
         git switch main
-        git branch -D ${{ github.event.inputs.instance }}
-        git checkout -b ${{ github.event.inputs.instance }} ${{ github.event.inputs.spoke_commit }}
+        git branch -D ${{ env.instance }}
+        git checkout -b ${{ env.instance }} ${{ github.event.inputs.spoke_commit }}
         git checkout main -- .github/workflows/
     
     - name: Update environment variables
       #This will update lkml files for variables that are specific in each environment
       run: |
-        python ./spoke/.github/workflows/find_and_replace.py ${{ github.event.inputs.instance }}
+        python ./spoke/.github/workflows/find_and_replace.py ${{ env.instance }}
   
     - name: Update manifest repo hub reference
       #This will update manifest file for the specific version of manifest
@@ -85,15 +83,15 @@ jobs:
       run: |
         cd ./spoke
         git add -A
-        git commit -m "Updating ${{ github.event.inputs.instance }} with latest commits"
-        git push --set-upstream origin ${{ github.event.inputs.instance }} --force
+        git commit -m "Updating ${{ env.instance }} with latest commits"
+        git push --set-upstream origin ${{ env.instance }} --force
   
     - name: Deploy spoke looker code to instance
       #This runs advanced deploy in the specified environment
       run: |
-        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.instance }} ${{ env.spoke_project }} ${{ github.event.inputs.instance }}
+        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ env.instance }} ${{ env.spoke_project }} ${{ env.instance }}
     
     - name: Deploy hub looker code to instance
       #This runs advanced deploy in the specified environment
       run: |
-        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ github.event.inputs.instance }} ${{ env.hub_project }} main
+        python ./spoke/.github/workflows/deploy_lookml_code.py ${{ env.instance }} ${{ env.hub_project }} main
