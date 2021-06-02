@@ -19,7 +19,7 @@ else:
 
 #Location of Manifest File
 manifest_path = spoke_repo_path + '/manifest.lkml'
-manifest_lock_path = spoke_repo_path + '/manifest_loc.lkml'
+manifest_lock_path = spoke_repo_path + '/manifest_lock.lkml'
 
 #Construct text to replace with
 replace = 'ref: "'+ commit +'"'
