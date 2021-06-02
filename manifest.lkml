@@ -1,9 +1,10 @@
-project_name: "firehouse_subs_internal"
+project_name: "demo_hub_and_spoke_deployer"
 
 remote_dependency: firehouse_subs_hub  {
-  url: "git@github.com:FHSReporting/R-A_Hub_Looker.git"
-  ref: "Master"
+  url: "https://github.com/AdamMinton/hub"
+  ref: "main"
 }
 
-
-replace_me
+constant: name {
+  value: "replace_me"
+}
