@@ -19,6 +19,7 @@ else:
 
 #Location of Manifest File
 manifest_path = spoke_repo_path + '/manifest.lkml'
+manifest_lock_path = spoke_repo_path + '/manifest_loc.lkml'
 
 #Construct text to replace with
 replace = 'ref: "'+ commit +'"'
@@ -38,4 +39,21 @@ s = s.replace(find, replace)
 
 #Write back manifest file with new code
 with open(manifest_path, "w") as f:
+    f.write(s)
+
+#Open Manifest Lock File
+with open(manifest_lock_path) as f:
+    s = f.read()
+
+#Search with regex to find the ref 
+search = re.search(r"ref: \"(\w*)\"",s)
+
+#Return the result of regex
+find = search.group()
+
+#Replace the string
+s = s.replace(find, replace)
+
+#Write back manifest file with new code
+with open(manifest_lock_path, "w") as f:
     f.write(s)
